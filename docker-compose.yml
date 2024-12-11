@@ -13,16 +13,28 @@ services:
       - frontend
     networks:
       - dev
-    
 
   backend:
     build:
-      context: ./backend
+      context: ./config
+    depends_on:
+      - redis
     networks:
       - dev
+    environment:
+      REDIS_HOST: redis
+      REDIS_PORT: 6379
 
   frontend:
     build:
       context: ./frontend
     networks:
       - dev
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - dev
+
